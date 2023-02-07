@@ -1,0 +1,32 @@
+version: '3'
+volumes:
+  ignore:
+services:
+  db:
+    image: mongo 
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+  api:
+    depends_on:
+      - db
+    container_name: cocktails-backend
+    environment:
+      - DATABASE_HOST=db
+      - JWT_KEY=16282284da7aa0a3ed00fba388c280de16055fa3
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/src
+      - /src/node_modules
+  front:
+    container_name: cocktails-frontend
+    build: ./frontend
+    ports: 
+      - "8080:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    restart: always
