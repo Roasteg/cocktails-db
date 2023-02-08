@@ -1,4 +1,6 @@
-FROM node:lts-alpine
+FROM node:18
+
+RUN npm i -g vite
 
 COPY package*.json ./
 
@@ -8,6 +10,8 @@ WORKDIR /app
 
 COPY . .
 
+ENV PORT=5173
+
 EXPOSE 5173
 
-CMD ["yarn", "dev"]
+CMD ["vite", "--host"]

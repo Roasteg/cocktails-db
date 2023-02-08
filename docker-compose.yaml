@@ -8,12 +8,14 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=root
+    ports:
+      - "27017:27017"
   api:
     depends_on:
       - db
     container_name: cocktails-backend
     environment:
-      - DATABASE_HOST=db
+      - DATABASE_HOST=mongodb://root:root@db:27017
       - JWT_KEY=16282284da7aa0a3ed00fba388c280de16055fa3
     build: ./backend
     ports:
@@ -29,4 +31,3 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    restart: always
