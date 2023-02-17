@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 
 import AuthController from "./controllers/AuthController";
+import ProductSuggestion from "./controllers/ProductSuggestion";
 
 const methodOverride = require("method-override");
 const mongoose = require("mongoose");
@@ -11,17 +12,17 @@ const mongoUrl = process.env.DATABASE_HOST;
 
 const logger = morgan('common');
 
-mongoose.connect(mongoUrl);
+// mongoose.connect(mongoUrl);
 
-const database = mongoose.connection;
+// const database = mongoose.connection;
 
-database.on("error", () => {
-    console.log("Error");
-})
+// database.on("error", () => {
+//     console.log("Error");
+// })
 
-database.once("connected", ()=>{
-    console.log("Connected to mongo!");
-})
+// database.once("connected", ()=>{
+//     console.log("Connected to mongo!");
+// })
 
 const app = express();
 const router = express.Router();
@@ -34,6 +35,7 @@ app.use(methodOverride());
 app.use(router);
 
 router.use('/auth', AuthController.router);
+router.use('/product', ProductSuggestion.router);
 
 router.get('/', (req, res) =>{
     res.json({message: "Hello world"});
