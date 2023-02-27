@@ -1,5 +1,7 @@
 import { Route, Routes } from "react-router-dom";
-import Auth from "./routes/Auth";
+import { lazy } from "react";
+
+const Auth = lazy(()=> import("./routes/Auth"));
 
 const routes = [
     {

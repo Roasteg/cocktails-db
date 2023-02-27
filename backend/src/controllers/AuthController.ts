@@ -43,7 +43,7 @@ authRouter.post('/login', async (req: Request, res: Response, next: NextFunction
 
 });
 
-authRouter.post('/register', async (req: Request, res: Response) => {
+authRouter.get('/register', async (req: Request, res: Response) => {
     const user = User.build({
         email: req.body.email,
         password: Md5.hashStr(req.body.password)
