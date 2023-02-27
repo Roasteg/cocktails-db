@@ -11,7 +11,7 @@ productRouter.get('/araxes', scrapeAraxes, (req: Request, res: Response) => {
 })
 
 productRouter.get('/prisma', scrapePrisma, (req: Request, res: Response) => {
-    return res.send(res.locals.obj);
+    return res.send(res.locals.product);
 })
 
 export class ProductSuggestion extends Controller {

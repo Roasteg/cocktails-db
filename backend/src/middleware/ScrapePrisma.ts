@@ -23,7 +23,7 @@ async function scrapePrisma(req: Request, res: Response, next: NextFunction){
 
     const jsonData = JSON.parse(obj)
 
-    res.locals.obj = jsonData[0];
+    res.locals.product = jsonData[0];
 
     next();
 }
