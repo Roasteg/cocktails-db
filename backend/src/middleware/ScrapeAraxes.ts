@@ -4,6 +4,8 @@ import { NextFunction, Request, Response } from "express";
 function fetchAraxes(product: string){
     const response = axios.get(`https://araxes.ee/wp-admin/admin-ajax.php?action=woodmart_ajax_search&number=20&post_type=product&query=${product}`).then((data)=>{
         return data.data.suggestions[0];
+    }).catch((error) => {
+        return error;
     });
     return response;
 }
@@ -13,8 +15,9 @@ async function scrapeAraxes(req: Request, res: Response, next: NextFunction) {
     if(product.no_found){
         return res.send("Product not found").status(204);
     }
+    const regex = /\d+/g;
 
-    product.price = product.price.match(/\d+/g).join('.');
+    product.price = product.price.match(regex).join('.');
     res.locals.product = product;
     next();
 } 

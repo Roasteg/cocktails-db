@@ -12,17 +12,17 @@ const mongoUrl = process.env.DATABASE_HOST;
 
 const logger = morgan('common');
 
-// mongoose.connect(mongoUrl);
+mongoose.connect(mongoUrl);
 
-// const database = mongoose.connection;
+const database = mongoose.connection;
 
-// database.on("error", () => {
-//     console.log("Error");
-// })
+database.on("error", () => {
+    console.log("Error");
+})
 
-// database.once("connected", ()=>{
-//     console.log("Connected to mongo!");
-// })
+database.once("connected", ()=>{
+    console.log("Connected to mongo!");
+})
 
 const app = express();
 const router = express.Router();

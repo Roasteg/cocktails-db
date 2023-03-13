@@ -6,6 +6,8 @@ import { Request, Response, NextFunction } from "express";
 function fetchPrisma(name: string) {
     const response = axios.get(`https://www.prismamarket.ee/products/search/${name}`).then((data) => {
         return data.data;
+    }).catch((error) => {
+        return error;
     })
     return response;
 }
@@ -22,7 +24,7 @@ async function scrapePrisma(req: Request, res: Response, next: NextFunction){
         return res.send("Product not found").status(204);
     }
 
-    res.locals.product = jsonData[0];
+    res.locals.product = jsonData[0].categories[0].entries[0];
 
     next();
 }
