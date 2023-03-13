@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .form-input {
+        @apply rounded-xl p-4 border outline-none transition-all focus:border-sky-500 border-gray-200;
+    }
+    .login {
+        background-image: url('./assets/person-outline.svg');
+        background-size: 1.8rem;
+        @apply pl-8 bg-left bg-no-repeat;
+    }
+
+    .password {
+        background-image: url('./assets/lock-closed-outline.svg');
+        background-size: 1.8rem;
+        @apply pl-8 bg-no-repeat bg-left;
+    }
+}
