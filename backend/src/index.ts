@@ -1,5 +1,6 @@
 import express from "express";
 import morgan from "morgan";
+import cors from "cors";
 
 import AuthController from "./controllers/AuthController";
 import ProductSuggestion from "./controllers/ProductSuggestion";
@@ -7,12 +8,12 @@ import ProductSuggestion from "./controllers/ProductSuggestion";
 const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 require("dotenv").config();
-
+ 
 const mongoUrl = process.env.DATABASE_HOST;
-
+ 
 const logger = morgan('common');
 
-mongoose.connect(mongoUrl);
+mongoose.connect(mongoUrl); 
 
 const database = mongoose.connection;
 
@@ -29,6 +30,16 @@ const router = express.Router();
 
 const port = process.env.PORT || 8000;
 
+app.use(cors({
+    allowedHeaders: ["Authorization", "Content-Type"],
+    exposedHeaders: ["Authorization"],
+    origin: "http://localhost:8080",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 200
+}))
+
 app.use(logger);
 app.use(express.json());
 app.use(methodOverride());
@@ -43,4 +54,4 @@ router.get('/', (req, res) =>{
 
 app.listen(port, ()=> {
     console.log(`Listening on http://localhost:${port}`);
-})
+}) 
