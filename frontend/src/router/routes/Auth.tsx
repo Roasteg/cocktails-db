@@ -12,6 +12,14 @@ const Auth = () => {
 
     const dispatch: AppDispatch = useDispatch();
 
+    const checkMatchingPasswords= (): boolean => {
+        if(password.current?.value !== confirmPassword.current?.value){
+            dispatch(createNotification({text: "Passwords do not match!", type: "error", timeout: 3000}));
+            return false;
+        }
+        return true;
+    }
+
     return (
         <>
             <div className="flex h-screen">
@@ -27,7 +35,7 @@ const Auth = () => {
                             <a onClick={(e) => {
                                 e.preventDefault();
                                 setLoading(!loading);
-                                dispatch(createNotification({timeout: 1000, type: "success"}));
+                                dispatch(createNotification({text: "Test",timeout: 3000, type: "success"}));
                             }} className="w-full h-14 p-3 rounded-xl overflow-hidden relative shadow-sm bg-black text-white text-center mt-6 font-semibold cursor-pointer">
                                 <p className={`absolute left-0 transition-all right-0  ${!loading ? 'opacity-100' : 'opacity-0'}`}>Sign in</p>
                                 <Loading className={`absolute transition-all left-0 w-full ${loading ? 'opacity-100' : 'opacity-0'}`} />
@@ -51,6 +59,7 @@ const Auth = () => {
                             <a onClick={(e) => {
                                 e.preventDefault();
                                 setLoading(!loading);
+                                checkMatchingPasswords();
                             }} className="w-full h-14 p-3 rounded-xl overflow-hidden relative shadow-sm bg-black text-white text-center mt-6 font-semibold cursor-pointer">
                                 <p className={`absolute left-0 transition-all right-0  ${!loading ? 'opacity-100' : 'opacity-0'}`}>Create account</p>
                                 <Loading className={`absolute transition-all left-0 w-full ${loading ? 'opacity-100' : 'opacity-0'}`} />

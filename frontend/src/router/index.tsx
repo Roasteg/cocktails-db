@@ -14,7 +14,7 @@ const routes = [
 
 const Router = () => {
     return (
-        <div className="container mx-auto min-h-screen">
+        <div className="container relative mx-auto min-h-screen">
             <Notification />
             <Routes>
                 {routes.map((route)=>{

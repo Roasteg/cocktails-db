@@ -17,4 +17,16 @@
         background-size: 1.8rem;
         @apply pl-8 bg-no-repeat bg-left;
     }
+
+    .notification {
+        @apply fixed p-4 left-1/2 -translate-x-1/2 transition-all font-bold text-xl text-gray-50 w-80 rounded-md mt-6 origin-top;
+    }
+
+    .success {
+        @apply bg-green-300;
+    }
+
+    .error {
+        @apply bg-red-500;
+    }
 }

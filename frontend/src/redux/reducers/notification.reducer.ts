@@ -1,13 +1,17 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit"
 
 interface Notification {
-    visible: boolean,
-    type: "success" | "error"
+    visible?: boolean,
+    text: string,
+    type: "success" | "error",
+    withIcon?: boolean
 }
 
 const initialState: Notification = {
-    visible: false,
-    type: "success"
+    visible: true,
+    type: "success",
+    withIcon: true,
+    text: "Notification"
 }
 
 
@@ -16,8 +20,8 @@ const hideNotification = createAction("alerts/hideNotification");
 
 export const createNotification = createAsyncThunk(
     'alerts/createNotification',
-    async(body: {timeout: number, type: "success" | "error"}, {dispatch}) => {
-        dispatch(showNotification({visible: true, type: body.type}));
+    async(body: {text: string, timeout: number, type: "success" | "error"}, {dispatch}) => {
+        dispatch(showNotification({text: body.text, type: body.type}));
         setTimeout(()=> {
             dispatch(hideNotification())
         }, body.timeout);
@@ -32,7 +36,8 @@ const notificationSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(showNotification, (state, action) => {
-            state.visible = action.payload?.visible ? action.payload.visible : true;
+            state.visible = true;
+            state.text = action.payload?.text ? action.payload.text : "";
             state.type = action.payload?.type ? action.payload.type : "success";
             console.log(state.visible);
             
