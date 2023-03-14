@@ -39,12 +39,9 @@ const notificationSlice = createSlice({
             state.visible = true;
             state.text = action.payload?.text ? action.payload.text : "";
             state.type = action.payload?.type ? action.payload.type : "success";
-            console.log(state.visible);
-            
         });
         builder.addCase(hideNotification, (state) => {
             state.visible = false;
-            console.log(state.visible);
         })
     }
 })
