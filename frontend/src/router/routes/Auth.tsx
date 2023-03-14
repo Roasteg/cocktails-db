@@ -1,11 +1,17 @@
 import React, { FormEvent, useState, useRef } from "react";
+import { useDispatch } from "react-redux";
 import Loading from "../../components/Loading";
+import { AppDispatch } from "../../redux/store";
+import { createNotification } from "../../redux/reducers/notification.reducer";
 
 const Auth = () => {
     const [loading, setLoading] = useState(false);
     const [login, setLogin] = useState(true);
     const password = useRef<HTMLInputElement>(null);
     const confirmPassword = useRef<HTMLInputElement>(null);
+
+    const dispatch: AppDispatch = useDispatch();
+
     return (
         <>
             <div className="flex h-screen">
@@ -21,6 +27,7 @@ const Auth = () => {
                             <a onClick={(e) => {
                                 e.preventDefault();
                                 setLoading(!loading);
+                                dispatch(createNotification({timeout: 1000, type: "success"}));
                             }} className="w-full h-14 p-3 rounded-xl overflow-hidden relative shadow-sm bg-black text-white text-center mt-6 font-semibold cursor-pointer">
                                 <p className={`absolute left-0 transition-all right-0  ${!loading ? 'opacity-100' : 'opacity-0'}`}>Sign in</p>
                                 <Loading className={`absolute transition-all left-0 w-full ${loading ? 'opacity-100' : 'opacity-0'}`} />
