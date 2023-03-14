@@ -4,7 +4,7 @@
 
 @layer components {
     .form-input {
-        @apply rounded-xl p-4 border outline-none transition-all focus:border-sky-500 border-gray-200;
+        @apply rounded-xl p-4 border outline-none transition-all focus:border-sky-500 border-gray-200 mt-2;
     }
     .login {
         background-image: url('./assets/person-outline.svg');
