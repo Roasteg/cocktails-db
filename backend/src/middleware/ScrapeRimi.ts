@@ -1,6 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import createDom from "./CreateDom";
-
 
 function fetchRimi(name: string) {
     const response = fetch(`https://www.rimi.ee/epood/ee/otsing?query=${name}`,{
