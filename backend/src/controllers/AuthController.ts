@@ -38,7 +38,7 @@ authRouter.post('/login', async (req: Request, res: Response, next: NextFunction
         }
 
         const accessToken = jwt.sign(tokenContent, privateAccessTokenKey, encryptionOptions);
-        return res.status(200).json({message: "Success!", user: new UserResponse(user.username, accessToken, user.id), status: 200});
+        return res.status(200).json(new UserResponse("Success!", 200, {username: user.username, token: accessToken, id: user.id,}));
     }
 
     return res.status(401).json(new Message(incorrectString, 401))

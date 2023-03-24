@@ -7,16 +7,13 @@ const privateAccessTokenKey = `${process.env.JWT_KEY}`;
 
 const verifyToken = (req: Request, res: Response, next: NextFunction) =>{
     const token = <string>req.headers["authorization"];
-
     let jwtPayload;
     try {
         jwtPayload = <jwt.JwtPayload>jwt.verify(token, privateAccessTokenKey);
         res.locals.jwtPayload = jwtPayload;
-        console.log(jwtPayload);
     }catch(error) {
         return res.status(401).send();
     }
-
     next();
 }
 
