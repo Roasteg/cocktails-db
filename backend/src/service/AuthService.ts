@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import * as jwt from "jsonwebtoken";
+import Message from "../models/Response";
 require("dotenv").config();
 
 const privateAccessTokenKey = `${process.env.JWT_KEY}`;
@@ -10,7 +11,8 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) =>{
     let jwtPayload;
     try {
         jwtPayload = <jwt.JwtPayload>jwt.verify(token, privateAccessTokenKey);
-        res.locals.jwtPaylaoad = jwtPayload;
+        res.locals.jwtPayload = jwtPayload;
+        console.log(jwtPayload);
     }catch(error) {
         return res.status(401).send();
     }
@@ -18,4 +20,11 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) =>{
     next();
 }
 
-export { verifyToken };
+const verifyId = (req: Request, res: Response, next: NextFunction) => {
+    if(res.locals.jwtPayload.userId !== req.body.userId) {
+        return res.status(401).json(new Message("You can't add to favourites for someone else!", 401));
+    }
+    next();
+}
+
+export { verifyToken, verifyId };

@@ -1,22 +1,25 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { Builder } from "postcss";
 import { createNotification } from "./notification.reducer";
 
 interface User {
+    id: string,
     username: string,
     token: string
 }
 
 const initialState: User = {
+    id: "",
     username: "",
     token: ""
 }
 
-export const auth = createAsyncThunk(
+const auth = createAsyncThunk(
     "auth/login",
-    async(body: {username: string, password: string}, {dispatch}) => {
+    async(body: {username: string, password: string}, {dispatch, rejectWithValue}) => {
         try {
-            axios.post("http://localhost:8000/auth/login", {},
+            return axios.post("http://localhost:8000/auth/login", {},
             {
                 withCredentials: true,
                 headers: {
@@ -30,14 +33,34 @@ export const auth = createAsyncThunk(
             }).then(({data}) => {
                 return data
             }).catch((error)=> {
-                dispatch(createNotification({text: error.message, type: "error", timeout: 4000}));
-                return error
+                dispatch(createNotification({text: error.response.data.message, type: "error", timeout: 4000}));
+                return rejectWithValue(error.response.data);
             });
         }
         catch (error) {
-            dispatch(createNotification({text: "error", type: "error", timeout: 1000}));
+            dispatch(createNotification({text: "Error", type: "error", timeout: 1000}));
             return error
         } 
+    }
+)
+
+const register = createAsyncThunk(
+    "auth/register",
+    async(body: {username: string, password: string}, {dispatch}) => {
+        try {
+            axios.post("http://localhost:8000/auth/register", {
+                username: body.username,
+                password: body.password
+            }).then((data) => {
+                return data;
+            }).catch((error) => {
+                dispatch(createNotification({text: error.response.data.message, type: "error", timeout: 4000}));
+                return error;
+            })
+        } catch(error) {
+            dispatch(createNotification({text: "Error", type: "error", timeout: 2000}));
+            return error;
+        }
     }
 )
 
@@ -46,10 +69,17 @@ const userReducer = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(auth.fulfilled, (state, {payload}) => {
-            console.log(payload);
-        })
+        builder.addCase(auth.fulfilled, (state:User, {payload}) => {
+            sessionStorage.setItem("token", payload.user.token as string);
+            state.id = payload.user.id;
+            state.token = payload.user.token;
+            state.username = payload.user.username;
+        });
+        // builder.addCase(register.fulfilled, (state, {payload}) => {
+        // })
     },
 })
 
+
+export {auth, register};
 export default userReducer.reducer;

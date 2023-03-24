@@ -8,7 +8,7 @@ interface Notification {
 }
 
 const initialState: Notification = {
-    visible: true,
+    visible: false,
     type: "success",
     withIcon: true,
     text: "Notification"

@@ -4,6 +4,7 @@ import { Router, Request, Response, NextFunction } from "express";
 import Message from "../models/Response";
 import { User, IUser } from "../models/User";
 import jwt from "jsonwebtoken";
+import UserResponse from "../models/UserResponse";
 require("dotenv").config();
 
 const privateAccessTokenKey = `${process.env.JWT_KEY}`;
@@ -11,7 +12,7 @@ const privateAccessTokenKey = `${process.env.JWT_KEY}`;
 const authRouter = Router();
 
 authRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
-    const incorrectString = "Email or password is incorrect";
+    const incorrectString = "Login or password is incorrect";
     const [authorizationType, token] = req.headers.authorization!.split(' ');
     if (authorizationType != 'Basic') {
         res.status(400).json(new Message("Wrong authorization type", 400));
@@ -22,12 +23,13 @@ authRouter.post('/login', async (req: Request, res: Response, next: NextFunction
     const user = await User.findOne({"email": email});
     
     if(!user){
-        return res.status(401).json(new Message(incorrectString, 400));
+        return res.status(401).json(new Message(incorrectString, 401));
     }
 
     if(Md5.hashStr(password) === user?.password){
         const tokenContent = {
-            email: user.email,
+            id: user.id,
+            username: user.username,
             issuedAt: new Date()
         };
 
@@ -36,7 +38,7 @@ authRouter.post('/login', async (req: Request, res: Response, next: NextFunction
         }
 
         const accessToken = jwt.sign(tokenContent, privateAccessTokenKey, encryptionOptions);
-        return res.status(200).json(new Message(accessToken, 200));
+        return res.status(200).json({message: "Success!", user: new UserResponse(user.username, accessToken, user.id), status: 200});
     }
 
     return res.status(401).json(new Message(incorrectString, 401))
@@ -45,7 +47,7 @@ authRouter.post('/login', async (req: Request, res: Response, next: NextFunction
 
 authRouter.post('/register', async (req: Request, res: Response) => {
     const user = User.build({
-        email: req.body.email,
+        username: req.body.username,
         password: Md5.hashStr(req.body.password)
     });
     try {

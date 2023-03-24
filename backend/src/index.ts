@@ -4,6 +4,7 @@ import cors from "cors";
 
 import AuthController from "./controllers/AuthController";
 import ProductSuggestion from "./controllers/ProductSuggestion";
+import RecipeController from "./controllers/RecipeController";
 
 const methodOverride = require("method-override");
 const mongoose = require("mongoose");
@@ -47,6 +48,7 @@ app.use(router);
 
 router.use('/auth', AuthController.router);
 router.use('/product', ProductSuggestion.router);
+router.use('/recipe', RecipeController.router);
 
 router.get('/', (req, res) =>{
     res.json({message: "Hello world"});
